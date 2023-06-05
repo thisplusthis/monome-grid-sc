@@ -20,11 +20,11 @@ s.waitForBoot({
         [1, 0, 0, 1],
     ];
 
-	~m.key({
+    ~m.key({
         // key press callback handler
-		arg x,y,z;
-		[x,y,z].postln;
-	});
+        arg x,y,z;
+        [x,y,z].postln;
+    });
 
     check_rules = {|left, middle, right|
         // determine next cell "state"
