@@ -18,36 +18,36 @@ Server.default = Server.local;
 
 s.waitForBoot({
     var check_rules, draw, check_tail, task;
-    var brightness = 5;
+    var brightness = 5; // grid led brightness for cells (0-15 range)
+    var tempo = (60/120) * (1/4);
 
     ~m.connect(0);
     ~cells = Array.fill(~m.cols * ~m.rows, {[1, 0].choose});
     ~nCols = ~m.cols - 1;
     ~nRows = ~m.rows - 1;
-    ~rules = [
-        // add and/or subtract rules for experimenting with results
+    ~rules = [  // add and/or subtract rules for experimenting with results
         [1, 0, 1, 0],
         [0, 0, 1, 1],
         [1, 1, 0, 0],
         [1, 1, 1, 0],
         [1, 0, 0, 1],
-//        [0, 1, 1, 1],
-        [0, 1, 0, 1],
-//        [0, 0, 0, 1],
+//      [0, 1, 0, 1],
+//      [0, 0, 0, 1],
+//      [0, 1, 1, 1],
     ];
 
+    /*
     ~m.key({ |x, y, z|
         // key press callback handler (add 1 to a cell that may be empty)
+        var pos = x + (y * 16);
         [x, y, z].postln;
         ~m.led(x, y, z * 15);
-        if((z == 1) && (y <= ~nRows), {
-            var pos = x + (y * 16);
-            ~cells[pos] = 1;
-        })
+        ~cells[pos] = z;
     });
+    */
 
     check_rules = {|left, middle, right|
-        // decide if cell is active vs inactive based on "rules"
+        // decide if cell is dead or alive based on "rules"
         var new_state = 0;
         (0..~rules.size-1).do({|r|
             if (left == ~rules[r][0] && middle == ~rules[r][1] && right == ~rules[r][2],
@@ -65,21 +65,32 @@ s.waitForBoot({
                 pos = y * 16 + x;
                 state = check_rules.(left: ~cells[pos - 1], middle: ~cells[pos], right: ~cells[pos + 1]);
                 if (state == 1,
-                    {
-                        ~m.led(x, y, brightness); // turn on
-                    },
-                    { ~m.led(x, y, 0) }  // turn off
+                    { ~m.led(x, y, brightness) },  // turn on (do stuff here for hooking up as controller)
+                    { ~m.led(x, y, 0) }             // turn off
                 );
                 ~cells[y * 16 + x] = state;
-
             });
         });
+
+        // if somehow the "board" is entirely cleared/empty,
+        // add another rule flavor and refill ~cells array
+        if (~cells.sum == 0,
+            {
+                "regenerating...".postln;
+                ~cells = Array.fill(~m.cols * ~m.rows, {[1, 0].choose}); // regenerate
+                ~rules = ~rules.addAll([
+                    [0, 1, 0, 1],
+                ]);
+                // add a rule that changes the animation
+            }
+        );
     };
 
+   // loop the functionality
     task = Routine({
         loop {
             draw.();
-            0.1.yield;
+            tempo.yield;
         }
     });
     task.play();
