@@ -77,11 +77,11 @@ s.waitForBoot({
         if (~cells.sum == 0,
             {
                 "regenerating...".postln;
-                ~cells = Array.fill(~m.cols * ~m.rows, {[1, 0].choose}); // regenerate
+                ~cells = Array.fill(~m.cols * ~m.rows, {[1, 1].choose}); // regenerate. change to [1, 0] for a differen animation type
+                // add a new rule that changes the animation
                 ~rules = ~rules.addAll([
                     [0, 1, 0, 1],
                 ]);
-                // add a rule that changes the animation
             }
         );
     };
