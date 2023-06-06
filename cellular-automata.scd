@@ -55,7 +55,7 @@ s.waitForBoot({
     */
 
     check_rules = {|left, middle, right|
-        // decide if cell is dead or alive based on "rules"
+        // decide if cell is "dead"" or "alive" after checking rules
         var new_state = 0;
         (0..~rules.size-1).do({|r|
             if (left == ~rules[r][0] && middle == ~rules[r][1] && right == ~rules[r][2],
@@ -80,11 +80,11 @@ s.waitForBoot({
                             amp: rrand(0.1, 0.5),
                             phase: rrand(0, 1),
                             sustain: rrand(0.5, 1.0)
-						]);
+                        ]);
                     },
-                    { ~m.led(x, y, 0) }             // turn off
+                    { ~m.led(x, y, 0) }  // turn led off
                 );
-                ~cells[y * 16 + x] = state;
+                ~cells[y * 16 + x] = state;  // update array with new state
             });
         });
 
