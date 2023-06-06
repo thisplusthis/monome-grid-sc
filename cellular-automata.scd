@@ -76,10 +76,10 @@ s.waitForBoot({
                     { // turn on (do stuff here for hooking up as controller)
                         ~m.led(x, y, brightness);
                         Synth(\grain, [
-							freq: (40 + (pos / 2)).midicps,
-							amp: rrand(0.1, 0.5),
+                            freq: (40 + (pos / 2)).midicps,
+                            amp: rrand(0.1, 0.5),
                             phase: rrand(0, 1),
-							sustain: rrand(0.5, 1.0)
+                            sustain: rrand(0.5, 1.0)
 						]);
                     },
                     { ~m.led(x, y, 0) }             // turn off
