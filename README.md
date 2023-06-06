@@ -1,2 +1,3 @@
-### Monome Grid Experiments
+### Grid Experiments
 
+Requires a [Monome](https://monome.org) Grid.
