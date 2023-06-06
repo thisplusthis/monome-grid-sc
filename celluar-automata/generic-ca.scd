@@ -10,6 +10,8 @@ A cellular automaton is a model of a system of “cell” objects with the follo
 3. Each cell has a neighborhood. This can be defined in any number of ways, but it is typically a list of adjacent cells.
 */
 
+s.boot;
+
 (
 
 Server.default = Server.local;
@@ -20,7 +22,7 @@ SynthDef(\grain, {
     var sig, env;
     sig = SinOsc.ar(\freq.kr(440), \phase.ir(0), \amp.kr(0.2));
     env = EnvGen.kr(Env.perc(0.01, \sustain.ir(1)), doneAction: 2);
-    sig = sig * env;
+    sig = sig * env * 0.01;
     Out.ar(0, sig ! 2);
 }).add;
 
@@ -77,7 +79,7 @@ s.waitForBoot({
                         ~m.led(x, y, brightness);
                         Synth(\grain, [
                             freq: (40 + (pos / 2)).midicps,
-                            amp: rrand(0.1, 0.5),
+                            amp: rrand(0.05, 0.1),
                             phase: rrand(0, 1),
                             sustain: rrand(0.5, 1.0)
                         ]);
