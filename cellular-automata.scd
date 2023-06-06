@@ -17,11 +17,11 @@ Server.default = Server.local;
 ~m = MonomeGrid.new(0);
 
 SynthDef(\grain, {
-	var sig, env;
-	sig = SinOsc.ar(\freq.kr(440), \phase.ir(0), \amp.kr(0.2));
+    var sig, env;
+    sig = SinOsc.ar(\freq.kr(440), \phase.ir(0), \amp.kr(0.2));
     env = EnvGen.kr(Env.perc(0.01, \sustain.ir(1)), doneAction: 2);
     sig = sig * env;
-	Out.ar(0, sig ! 2);
+    Out.ar(0, sig ! 2);
 }).add;
 
 s.waitForBoot({
