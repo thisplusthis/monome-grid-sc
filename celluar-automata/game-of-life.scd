@@ -4,14 +4,6 @@ Server.default = Server.local;
 
 ~m = MonomeGrid.new(0);
 
-SynthDef(\blip, {
-    var sig, env;
-    env = EnvGen.kr(Env.perc(0.01, \sustain.ir(1)), doneAction: 2);
-    sig = LPF.ar(SinOsc.ar(\freq.kr(200), SinOsc.kr(1000)).tanh, 3000, 0.1);
-    sig = (sig * env) * \amp.kr(0.1);
-    Out.ar(0, sig ! 2);
-}).add;
-
 s.waitForBoot({
 
     var state, brightness, tempo, task, init, check_rules, reinit;
@@ -105,17 +97,10 @@ s.waitForBoot({
         // draw new board with updated state for each cell after applying rules
         for(0, ~nCols, { |x|
             for(0, ~nRows, { |y|
-                var pos = y * 16 + x;
-                var scale = [70, 73, 75, 77, 82];
                 if (n[x, y] == 1,
                     {
                         // do stuff here
                         ~m.led(x, y, brightness);
-                        Synth(\blip, [
-                            freq: (scale ++ (scale * 4)).choose.midicps + 600,
-                            amp: rrand(0.05, 0.1),
-                            sustain: rrand(0.1, 0.5)
-                        ]);
                     },
                     { ~m.led(x, y, 0)}
                 );
