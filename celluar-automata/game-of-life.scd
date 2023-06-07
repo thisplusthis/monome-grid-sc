@@ -59,6 +59,7 @@ s.waitForBoot({
                 if (o[(x + 1) % ~nCols, (y + 1) % ~nRows] == 1, { neighbors = neighbors + 1});
 
                 // apply rules
+                // TODO this is shit as a byproduct of supercollider's syntax. refactor it.
                 if ((o[x, y] == 1) && (neighbors < 2),
                     {
                         n[x, y] = 0;
